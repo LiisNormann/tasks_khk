@@ -3,11 +3,14 @@
 const form = document.querySelector("form"); //gets info from the form element
 const taskInput = document.querySelector('#task'); //get form input data
 const tasksList = document.querySelector('.collection'); //get the ul area through class
+const delTasksBtn = document.querySelector('#del-tasks'); //get the Delete button through id
 
 //if the form is submitted, addTask function will run
 form.addEventListener("submit", addTask)
 //if the ul area is clicked, deleteTask function will run
 tasksList.addEventListener('click', deleteTask);
+//if the Delete button is clicked, deleteTasks will run
+delTasksBtn.addEventListener('click', deleteTasks);
 
 //if X is clicked, the task is removed from the list
 function deleteTask(event) {
@@ -18,6 +21,20 @@ function deleteTask(event) {
             //delete parent element (li) of the target (X) at the event (click)
             event.target.parentElement.remove();
         }
+    }
+}
+//if the button is clicked, whole list is removed
+function deleteTasks () {
+    //upon click, the HTML text (ul list) gets emptied
+    //tasksList.innerHTML = '';
+
+    //deletion through firstChildElement (faster process than deleting HTML, especially if the deleted data is big)
+    //repetitive process until all list items are removed
+    //while is used when the number of events/processes is unknown (don't know exactly how many deletions will have to be made before all is deleted)
+    //if there is a firstChild of the list
+    while(tasksList.firstChild) {
+        //delete first Child
+        tasksList.removeChild(tasksList.firstChild);
     }
 }
 
