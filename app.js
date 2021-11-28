@@ -15,7 +15,7 @@ delTasksBtn.addEventListener('click', deleteTasks);
 //if X is clicked, the task is removed from the list
 function deleteTask(event) {
     //if X is clicked
-    if(event.target.textContent == 'X') {
+    if(event.target.textContent === 'X') {
         //ask for confirmation
         if(confirm('Do you want to delete this task=')){
             //delete parent element (li) of the target (X) at the event (click)
@@ -66,10 +66,28 @@ function addTask(event) {
     //add <li> to <ul>
     ul.appendChild(li);
 
+    //save task
+    addTaskToLocalStorage(task);
+
     // clear input value (aka empties the previously inserted value from the input window, without this if you were to add 'apple' into the input field and submit it, then the word would remain in the input window (as well as appear on the list that was just created)
     taskInput.value = '';
 
     event.preventDefault(); //form submit event control (prevents the submit only appearing in the console for the brief but instead keeps it there (useful while writing the code))
+}
+
+//save input value of task to localStorage
+function addTaskToLocalStorage(task) {
+    let tasks;
+    //check if there is an element 'tasks' in local storage, if not then create an array 
+    if(localStorage.getItem('tasks') === null) {
+        tasks = [];
+    } else {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+
+    //add new element to an array
+    tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 
