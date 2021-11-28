@@ -20,6 +20,9 @@ function deleteTask(event) {
         if(confirm('Do you want to delete this task=')){
             //delete parent element (li) of the target (X) at the event (click)
             event.target.parentElement.remove();
+
+            task = event.target.parentElement.firstChild.textContent;
+            deleteTaskFromLocalStorage(task);
         }
     }
 }
@@ -36,6 +39,28 @@ function deleteTasks () {
         //delete first Child
         tasksList.removeChild(tasksList.firstChild);
     }
+}
+
+function deleteTaskFromLocalStorage(task) {
+    let tasks;
+    //check if there is an element 'tasks' in local storage, if not then create an array
+    if(localStorage.getItem('tasks') === null) {
+        tasks = [];
+    } else {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+
+    //remove an element without leaving holes in the array
+    tasks.forEach(function (tasksElement, index) {
+        //if tasksElement is the same with the deleted item
+       if(tasksElement === task) {
+           //get the item index and delete 1 item aka that exact item
+           tasks.splice(index, 1)
+       }
+    });
+
+    //overwrite localStorage without the deleted element
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 
@@ -87,6 +112,7 @@ function addTaskToLocalStorage(task) {
 
     //add new element to an array
     tasks.push(task);
+    //overWrite localStorage with the added element
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
